@@ -12,4 +12,5 @@ public enum Status {
 
     private final String statusKey;
     private final int statusNum;
+
 }

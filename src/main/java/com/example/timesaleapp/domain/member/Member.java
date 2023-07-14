@@ -1,7 +1,7 @@
 package com.example.timesaleapp.domain.member;
 
 import com.example.timesaleapp.domain.BaseTimeEntity;
-import com.example.timesaleapp.domain.order.Order;
+//import com.example.timesaleapp.domain.order.Order;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,16 +19,18 @@ public class Member extends BaseTimeEntity {
 
     private String email;
 
-    private String pwd;
+    private String password;
 
     private String nickName;
-
-    private Address address;
 
 //    @Column
 //    private Order order;
 
     @Enumerated(value = EnumType.STRING)
     private Status status;
+
+    public void changeStatus(){
+        this.status = Status.DELETED;
+    }
 
 }
