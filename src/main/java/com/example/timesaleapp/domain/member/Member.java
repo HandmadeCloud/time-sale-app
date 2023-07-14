@@ -2,6 +2,7 @@ package com.example.timesaleapp.domain.member;
 
 import com.example.timesaleapp.domain.BaseTimeEntity;
 //import com.example.timesaleapp.domain.order.Order;
+import com.example.timesaleapp.controller.member.MemberUpdateDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter @Entity
-@Builder @Table(name="member")
+@Builder @Table(name="members")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Member extends BaseTimeEntity {
@@ -27,10 +28,15 @@ public class Member extends BaseTimeEntity {
 //    private Order order;
 
     @Enumerated(value = EnumType.STRING)
-    private Status status;
+    private MemberStatus memberStatus;
 
-    public void changeStatus(){
-        this.status = Status.DELETED;
+    public void changeStatusDeleted(){
+        this.memberStatus = MemberStatus.DELETED;
     }
 
+    public void update(MemberUpdateDto memberUpdateDto) {
+        this.email = memberUpdateDto.email();
+        this.password = memberUpdateDto.password();
+        this.nickName = memberUpdateDto.nickName();
+    }
 }

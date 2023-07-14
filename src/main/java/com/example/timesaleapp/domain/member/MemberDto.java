@@ -15,7 +15,7 @@ public class MemberDto {
     private String email;
     private String password;
     private String nickName;
-    private Status status;
+    private MemberStatus memberStatus;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -25,13 +25,11 @@ public class MemberDto {
                 .email(member.getEmail())
                 .password(member.getPassword())
                 .nickName(member.getNickName())
-                .status(member.getStatus())
+                .memberStatus(member.getMemberStatus())
                 .createdAt(member.getCreatedAt())
                 .updatedAt(LocalDateTime.now())
                 .build();
         return memberDto;
     }
-
-
 
 }

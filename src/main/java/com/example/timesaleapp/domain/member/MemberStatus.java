@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum Status {
+public enum MemberStatus {
 
     ACTIVE("Active",0),
     DELETED("Deleted",1);
