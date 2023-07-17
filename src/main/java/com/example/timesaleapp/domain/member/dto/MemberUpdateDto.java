@@ -1,4 +1,4 @@
-package com.example.timesaleapp.controller.member;
+package com.example.timesaleapp.domain.member.dto;
 
 import com.example.timesaleapp.config.ResponseException;
 import com.example.timesaleapp.constant.ResponseTemplateStatus;

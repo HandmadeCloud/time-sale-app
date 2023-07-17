@@ -1,24 +1,13 @@
-package com.example.timesaleapp.controller.member;
+package com.example.timesaleapp.domain.member.dto;
 
 import com.example.timesaleapp.config.ResponseException;
 import com.example.timesaleapp.constant.ResponseTemplateStatus;
 import com.example.timesaleapp.domain.Validatable;
-import com.example.timesaleapp.domain.member.Member;
 
 import static com.example.timesaleapp.constant.Constant.REGEX_EMAIL;
 import static com.example.timesaleapp.constant.Constant.REGEX_PWD;
-import static com.example.timesaleapp.domain.member.MemberStatus.ACTIVE;
 
 public record MemberSignUpDto(String email, String password, String nickName) implements Validatable {
-
-    public Member toEntity() {
-        return Member.builder()
-                .email(email)
-                .password(password)
-                .nickName(nickName)
-                .memberStatus(ACTIVE)
-                .build();
-    }
 
     @Override
     public void validate() throws ResponseException {

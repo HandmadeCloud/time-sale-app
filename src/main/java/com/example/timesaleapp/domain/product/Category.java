@@ -4,6 +4,7 @@ public enum Category {
 
     COMPUTER,
     LIGHT,
-    BOOK
+    BOOK,
+    MAGIC
 
 }

@@ -20,6 +20,16 @@ public enum ResponseTemplateStatus {
     PASSWORD_FORM_INVALID(HttpStatus.BAD_REQUEST, 301, "유효하지 않은 비밀번호 형식입니다."),
 
     /**
+     * product 관련 오류
+     */
+    PRODUCT_MINUS_STOCK(HttpStatus.NOT_ACCEPTABLE, 400, "재고가 부족합니다."),
+
+    /**
+     * timesale 관련 오류
+     */
+    SALE_PRICE_NEGATIVE(HttpStatus.NOT_ACCEPTABLE, 500, "가격이 음수입니다."),
+
+    /**
      * 전체 오류
      */
     NOT_FOUND(HttpStatus.NOT_FOUND, 900, "해당하는 정보가 없습니다." );
