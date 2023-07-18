@@ -37,10 +37,7 @@ public class ProductService {
 
     public ProductDto correct(Long id, ProductUpdateDto productUpdateDto) {
         Product product = productRepository.findById(id).orElseThrow(MyAppNotFoundException::new);
-        log.info(product.getTag().toString());
         product.update(productUpdateDto);
-        log.info(product.getMainImage());
-        log.info(product.getTag().toString());
         return ProductDto.of(product);
     }
 

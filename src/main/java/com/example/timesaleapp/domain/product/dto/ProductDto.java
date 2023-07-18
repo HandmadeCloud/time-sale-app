@@ -24,7 +24,7 @@ public class ProductDto {
     private Tag tag;
 
     public static ProductDto of(Product product) {
-        ProductDto productDto = ProductDto.builder()
+        return ProductDto.builder()
                 .id(product.getId())
                 .name(product.getName())
                 .category(product.getCategory())
@@ -34,7 +34,5 @@ public class ProductDto {
                 .productStatus(product.getProductStatus())
                 .tag(product.getTag())
                 .build();
-
-        return productDto;
     }
 }

@@ -12,8 +12,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 
-@Getter @Builder
+import static com.example.timesaleapp.domain.product.ProductStatus.ON_SALE;
+
+@Getter
+@Builder
 @Entity
+@DynamicUpdate
 @Table(name = "products")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -52,11 +56,11 @@ public class Product extends BaseTimeEntity {
     }
 
     public void update(ProductUpdateDto productUpdateDto) {
-        this.name = validateUpdateString(productUpdateDto.name(),this.name);
-        this.mainImage = validateUpdateString(productUpdateDto.mainImage(),this.mainImage);
+        this.name = validateUpdateString(productUpdateDto.name(), this.name);
+        this.mainImage = validateUpdateString(productUpdateDto.mainImage(), this.mainImage);
         this.price = validateUpdateInt(productUpdateDto.price(), this.price);
-        this.stockQuantity =  validateUpdateInt(productUpdateDto.stockQuantity(), this.stockQuantity);
-        this.tag = validateUpdateTag(productUpdateDto.tag(),this.tag);
+        this.stockQuantity = validateUpdateInt(productUpdateDto.stockQuantity(), this.stockQuantity);
+        this.tag = validateUpdateTag(productUpdateDto.tag(), this.tag);
     }
 
     public void deductStock(int orderQuantity) {
@@ -67,7 +71,11 @@ public class Product extends BaseTimeEntity {
         this.stockQuantity = remainQuantity;
     }
 
-    public static Product of(ProductRegisterDto registerDto){
+    public void addStock(int canceledQuantity) {
+        this.stockQuantity += canceledQuantity;
+    }
+
+    public static Product of(ProductRegisterDto registerDto) {
         return Product.builder()
                 .name(registerDto.name())
                 .category(registerDto.category())
@@ -75,6 +83,7 @@ public class Product extends BaseTimeEntity {
                 .price(registerDto.price())
                 .stockQuantity(registerDto.stockQuantity())
                 .tag(registerDto.tag())
+                .productStatus(ON_SALE)
                 .build();
     }
 
@@ -83,24 +92,23 @@ public class Product extends BaseTimeEntity {
         this.price = salePrice;
     }
 
-
     //수정 업데이트 파트
-    private String validateUpdateString(String update, String origin){
-        if (update == null){
+    private String validateUpdateString(String update, String origin) {
+        if (update == null) {
             return origin;
         }
         return update;
     }
 
-    private int validateUpdateInt(Integer update, Integer origin){
-        if (update == null){
+    private int validateUpdateInt(Integer update, Integer origin) {
+        if (update == null) {
             return origin;
         }
         return update;
     }
 
-    private Tag validateUpdateTag(Tag update, Tag origin){
-        if (update == null){
+    private Tag validateUpdateTag(Tag update, Tag origin) {
+        if (update == null) {
             return origin;
         }
         return update;

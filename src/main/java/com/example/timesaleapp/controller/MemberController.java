@@ -11,20 +11,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/members") //검증 끝
+@RequestMapping("/api/v1/members") //검증 끝
 public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/signup")
-    public String getSignUpPage(){
-        return "signup";
-    }
-
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseTemplate<List<Member>> getAllMembers(){
         return ResponseTemplate.valueOf(memberService.getAllMembers());
     }
