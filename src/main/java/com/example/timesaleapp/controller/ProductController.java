@@ -9,39 +9,33 @@ import com.example.timesaleapp.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/products")
+@RequestMapping("/api/v1/products")
 public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping("/create")
-    public String getRegisterPage(){
-        return "create";
-    }
-
-    @GetMapping("/")
-    public ResponseTemplate<List<Product>> getProductsPage(){
+    @GetMapping("")
+    public ResponseTemplate<List<Product>> getAll(){
         return ResponseTemplate.valueOf(productService.getAllProducts());
     }
 
-    @PostMapping("/create")
-    public ResponseTemplate<Long> registerProduct(@RequestBody ProductRegisterDto registerDto){
+    @PostMapping("/new")
+    public ResponseTemplate<Long> register(@RequestBody ProductRegisterDto registerDto){
         return ResponseTemplate.valueOf(productService.register(registerDto));
     }
 
-    @PatchMapping("/{id}/update")
-    public ResponseTemplate<ProductDto> correctProduct(@PathVariable Long id, @RequestBody ProductUpdateDto productUpdateDto ){
+    @PatchMapping("/update/{id}")
+    public ResponseTemplate<ProductDto> correct(@PathVariable Long id, @RequestBody ProductUpdateDto productUpdateDto ){
         return ResponseTemplate.valueOf(productService.correct(id, productUpdateDto));
     }
 
-    @PatchMapping("/{id}/delete")
-    public ResponseTemplate<ProductDto> deleteMember(@PathVariable Long id){
+    @PatchMapping("/delete/{id}")
+    public ResponseTemplate<ProductDto> delete(@PathVariable Long id){
         return ResponseTemplate.valueOf(productService.delete(id));
     }
 }

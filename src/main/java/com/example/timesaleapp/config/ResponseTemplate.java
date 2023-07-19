@@ -10,7 +10,7 @@ import static com.example.timesaleapp.constant.ResponseTemplateStatus.SUCCESS;
 
 @Getter
 @AllArgsConstructor
-@JsonPropertyOrder({"httpStatus", "code", "message","data"})
+@JsonPropertyOrder({"httpStatus", "code", "message", "data"})
 public class ResponseTemplate<T> {
 
     private HttpStatus httpStatus;

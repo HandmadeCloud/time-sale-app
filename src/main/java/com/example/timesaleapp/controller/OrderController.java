@@ -14,19 +14,19 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/orders")
+@RequestMapping("/api/v1/orders")
 public class OrderController {
 
     private final OrderService orderService;
 
-    @PostMapping("/create")
-    public ResponseTemplate<Long> createOrder(@RequestParam("memberId") Long memberId,
+    @PostMapping("/new")
+    public ResponseTemplate<Long> create(@RequestParam("memberId") Long memberId,
                                         @RequestBody List<OrderProductCreateDto> orderProducts) {
         return ResponseTemplate.valueOf(orderService.createOrder(memberId, orderProducts));
     }
 
-    @GetMapping("/")
-    public ResponseTemplate<List<Order>> getOrdersPage(){
+    @GetMapping("")
+    public ResponseTemplate<List<Order>> getAll(){
         return ResponseTemplate.valueOf(orderService.getAllOrders());
     }
 
@@ -37,7 +37,7 @@ public class OrderController {
 
 
     @PatchMapping("/{id}/delete")
-    public ResponseTemplate<OrderDto> cancelOrder(@PathVariable Long id){
+    public ResponseTemplate<OrderDto> cancel(@PathVariable Long id){
         return ResponseTemplate.valueOf(orderService.cancel(id));
     }
 

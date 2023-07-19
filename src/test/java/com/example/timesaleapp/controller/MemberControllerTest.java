@@ -1,6 +1,7 @@
 package com.example.timesaleapp.controller;
 
 import com.example.timesaleapp.domain.member.Member;
+import com.example.timesaleapp.domain.member.MemberStatus;
 import com.example.timesaleapp.domain.member.dto.MemberDto;
 import com.example.timesaleapp.domain.member.dto.MemberSignUpDto;
 import com.example.timesaleapp.domain.member.dto.MemberUpdateDto;
@@ -16,6 +17,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.example.timesaleapp.domain.member.MemberStatus.DELETED;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -65,18 +69,18 @@ class MemberControllerTest {
         //when
         mvc.perform(get("/api/v1/members")
                         .contentType(APPLICATION_JSON)) // 요청에 관한 정보 전달
-                .andExpect(status().isOk()) // 응답을 기대하는 부분
-                .andExpect(jsonPath("$.data").isArray())
-                .andExpect(jsonPath("$.data[0].id").value(1))
-                .andExpect(jsonPath("$.data[0].email").value("test@test.com"))
-                .andExpect(jsonPath("$.data[1].email").value("min@min.com"));
+                        .andExpect(status().isOk()) // 응답을 기대하는 부분
+                        .andExpect(jsonPath("$.data").isArray())
+                        .andExpect(jsonPath("$.data[0].id").value(1))
+                        .andExpect(jsonPath("$.data[0].email").value("test@test.com"))
+                        .andExpect(jsonPath("$.data[1].email").value("min@min.com"));
     }
 
     @Test
     @DisplayName("회원가입에 성공한다.")
     void signUp() throws Exception{
         //given
-        when(memberService.join(signUpDto)).thenReturn(1L);
+        when(memberService.join(any(MemberSignUpDto.class))).thenReturn(1L);
 
         //when, then
         mvc.perform(post("/api/v1/members/signup")
@@ -89,18 +93,18 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("회원정보 수정에 성공한다.")
-    void correctMember() throws Exception {
+    void correct() throws Exception {
         //given
-        Member updatedMember = Member.builder()
+        Member updatedMember = Member.builder() //원본
                 .email("hihi@hihi.com")
                 .password("password1!")
                 .nickName("heehee")
                 .build();
-
-        when(memberService.correct(1L, updateDto)).thenReturn(MemberDto.of(updatedMember));
+                                    //수정하는 내용 보내는 값을 any    //원본
+        when(memberService.correct(anyLong(), any(MemberUpdateDto.class))).thenReturn(MemberDto.of(updatedMember));
 
         //when,then
-        mvc.perform(patch("/api/v1/members/{id}/update", 1)
+        mvc.perform(patch("/api/v1/members/update/{id}", 1)
                 .contentType(APPLICATION_JSON)
                 .content(asJsonString(updateDto)))
                 .andExpect(status().isOk())
@@ -111,27 +115,25 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("멤버 정보 수정에 성공한다.")
-    void deleteMember() throws Exception{
+    @DisplayName("회원 정보 삭제 상태변경에 성공한다.")
+    void delete() throws Exception{
         //given
         Member deletedMember = Member.builder()
                 .email("test@test.com")
                 .password("hihihi123!")
                 .nickName("hihi")
+                .memberStatus(DELETED)
                 .build();
 
-        when(memberService.delete(1L)).thenReturn(MemberDto.of(deletedMember));
+        when(memberService.delete(anyLong())).thenReturn(MemberDto.of(deletedMember));
 
         //when, then
-        mvc.perform(patch("/api/v1/members/{id}/delete", 1)
+        mvc.perform(patch("/api/v1/members/delete/{id}", 1)
                         .contentType(APPLICATION_JSON))
                         .andExpect(status().isOk())
                         .andExpect(content().contentType(APPLICATION_JSON))
-                        .andExpect(jsonPath("$.data.email").value("test@test.com"))
-                        .andExpect(jsonPath("$.data.password").value("hihihi123!"))
-                        .andExpect(jsonPath("$.data.nickName").value("hihi"));
+                        .andExpect(jsonPath("$.data.memberStatus").value("DELETED"));
     }
-
 
     private String asJsonString(Object obj) throws Exception {
         ObjectMapper mapper = new ObjectMapper();

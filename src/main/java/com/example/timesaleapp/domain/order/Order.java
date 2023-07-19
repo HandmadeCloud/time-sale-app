@@ -31,6 +31,7 @@ public class Order extends BaseTimeEntity {
     private Member member;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
     @Column(name = "total_price")

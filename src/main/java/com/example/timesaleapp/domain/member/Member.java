@@ -1,11 +1,9 @@
 package com.example.timesaleapp.domain.member;
 
 import com.example.timesaleapp.domain.BaseTimeEntity;
-//import com.example.timesaleapp.domain.order.Order;
 import com.example.timesaleapp.domain.member.dto.MemberSignUpDto;
 import com.example.timesaleapp.domain.member.dto.MemberUpdateDto;
 import com.example.timesaleapp.domain.order.Order;
-import com.example.timesaleapp.domain.product.Tag;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,6 +33,7 @@ public class Member extends BaseTimeEntity {
     private String nickName;
 
     @OneToMany(mappedBy = "member")
+    @Builder.Default
     private List<Order> orders = new ArrayList<>();
 
     @Enumerated(value = EnumType.STRING)
