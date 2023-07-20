@@ -21,12 +21,12 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     @Transactional
-    public Long register(ProductRegisterDto registerDto) {
+    public Long registerProduct(ProductRegisterDto registerDto) {
         Product product = Product.of(registerDto);
-        return productRepository.save(product).getId();
+        return productRepository.save(product).getProductId();
     }
 
-    public List<Product> getAllProducts(){
+    public List<Product> getProducts(){
         return productRepository.findAll();
     }
 
@@ -34,13 +34,13 @@ public class ProductService {
         return productRepository.findById(productId).orElseThrow(MyAppNotFoundException::new);
     }
 
-    public ProductDto correct(Long id, ProductUpdateDto productUpdateDto) {
+    public ProductDto updateProduct(Long id, ProductUpdateDto productUpdateDto) {
         Product product = productRepository.findById(id).orElseThrow(MyAppNotFoundException::new);
         product.update(productUpdateDto);
         return ProductDto.of(product);
     }
 
-    public ProductDto delete(Long id) {
+    public ProductDto deleteProduct(Long id) {
         Product product = productRepository.findById(id).orElseThrow(MyAppNotFoundException::new);
         product.changeStatusNotForSale();
         return ProductDto.of(product);

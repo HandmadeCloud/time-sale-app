@@ -1,7 +1,6 @@
 package com.example.timesaleapp.controller;
 
 import com.example.timesaleapp.domain.member.Member;
-import com.example.timesaleapp.domain.member.MemberStatus;
 import com.example.timesaleapp.domain.member.dto.MemberDto;
 import com.example.timesaleapp.domain.member.dto.MemberSignUpDto;
 import com.example.timesaleapp.domain.member.dto.MemberUpdateDto;
@@ -21,7 +20,6 @@ import static com.example.timesaleapp.domain.member.MemberStatus.DELETED;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -38,24 +36,27 @@ class MemberControllerTest {
     private List<Member> members;
     private MemberSignUpDto signUpDto;
     private MemberUpdateDto updateDto;
+    private Member member1;
+    private Member member2;
 
     @BeforeEach
     public void setUp(){
         signUpDto = new MemberSignUpDto("test@test.com", "hihihi123!", "hihi");
         updateDto = new MemberUpdateDto("hihi@hihi.com", "password1!", "heehee");
 
-        Member member1 = Member.builder()
+        member1 = Member.builder()
                 .id(1L)
                 .email("test@test.com")
                 .password("hihihi123!")
                 .nickName("hihi")
                 .build();
 
-        Member member2 = Member.builder()
+        member2 = Member.builder()
                 .id(2L)
                 .email("min@min.com")
                 .password("minmin123!")
                 .nickName("minmin")
+                .memberStatus(DELETED)
                 .build();
 
         members = Arrays.asList(member1, member2);
@@ -63,9 +64,9 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("멤버 전체 조회에 성공한다.")
-    void getAllMembers() throws Exception {
+    void getMembers() throws Exception {
         //given
-        given(memberService.getAllMembers()).willReturn(members);
+        given(memberService.getMembers()).willReturn(members);
 
         //when
         mvc.perform(get("/api/v1/members")
@@ -94,15 +95,9 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("회원정보 수정에 성공한다.")
-    void correct() throws Exception {
-        //given
-        Member updatedMember = Member.builder() //원본
-                .email("hihi@hihi.com")
-                .password("password1!")
-                .nickName("heehee")
-                .build();
-                                    //수정하는 내용 보내는 값을 any    //원본
-        given(memberService.correct(anyLong(), any(MemberUpdateDto.class))).willReturn(MemberDto.of(updatedMember));
+    void updateMember() throws Exception {
+        // given
+        given(memberService.updateMember(anyLong(), any(MemberUpdateDto.class))).willReturn(MemberDto.of(member1));
 
         //when,then
         mvc.perform(patch("/api/v1/members/update/{id}", 1)
@@ -110,26 +105,19 @@ class MemberControllerTest {
                 .content(asJsonString(updateDto)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON))
-                .andExpect(jsonPath("$.data.email").value("hihi@hihi.com"))
+                .andExpect(jsonPath("$.data.email").value("test@test.com"))
                 .andExpect(jsonPath("$.data.password").value("password1!"))
                 .andExpect(jsonPath("$.data.nickName").value("heehee"));
     }
 
     @Test
     @DisplayName("회원 정보 삭제 상태변경에 성공한다.")
-    void delete() throws Exception{
+    void deleteMember() throws Exception{
         //given
-        Member deletedMember = Member.builder()
-                .email("test@test.com")
-                .password("hihihi123!")
-                .nickName("hihi")
-                .memberStatus(DELETED)
-                .build();
-
-        given(memberService.delete(anyLong())).willReturn(MemberDto.of(deletedMember));
+        given(memberService.deleteMember(anyLong())).willReturn(MemberDto.of(member2));
 
         //when, then
-        mvc.perform(patch("/api/v1/members/delete/{id}", 1)
+        mvc.perform(patch("/api/v1/members/delete/{id}", 2L)
                         .contentType(APPLICATION_JSON))
                         .andExpect(status().isOk())
                         .andExpect(content().contentType(APPLICATION_JSON))

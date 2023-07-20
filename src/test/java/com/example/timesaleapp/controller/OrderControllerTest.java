@@ -43,27 +43,34 @@ class OrderControllerTest {
 
     private List<Order> orders = new ArrayList<>();
 
+    private Product product1;
+    private Product product2;
+    private Member member1;
+    private OrderProduct orderProduct1;
+    private OrderProduct orderProduct2;
+    private Order order1;
+
     @BeforeEach
     public void setUp(){
         // Mock 객체 생성
-        Product product1 = mock(Product.class);
-        Product product2 = mock(Product.class);
-        Member member1 = mock(Member.class);
+        product1 = mock(Product.class);
+        product2 = mock(Product.class);
+        member1 = mock(Member.class);
 
-        OrderProduct orderProduct1 = OrderProduct.builder()
+        orderProduct1 = OrderProduct.builder()
                 .product(product1)
                 .orderPrice(1000)
                 .count(1)
                 .build();
 
-        OrderProduct orderProduct2 = OrderProduct.builder()
+        orderProduct2 = OrderProduct.builder()
                 .product(product2)
                 .orderPrice(2000)
                 .count(2)
                 .build();
 
         // Order 객체 생성 및 주문 상품 추가
-        Order order1 = Order.builder()
+        order1 = Order.builder()
                 .status(OrderStatus.ACCEPTED)
                 .member(member1)
                 .orderProducts(Arrays.asList(orderProduct1, orderProduct2))
@@ -74,9 +81,9 @@ class OrderControllerTest {
 
     @Test
     @DisplayName("주문 정보 전체 조회에 성공한다.")
-    void getAll() throws Exception {
+    void getOrders() throws Exception {
         // Given
-        given(orderService.getAllOrders()).willReturn(orders);
+        given(orderService.getOrders()).willReturn(orders);
 
         // When, Then
         mvc.perform(get("/api/v1/orders"))
@@ -88,7 +95,7 @@ class OrderControllerTest {
 
     @Test
     @DisplayName("주문 생성에 성공한다.")
-    void create() throws Exception {
+    void createOrder() throws Exception {
         given(orderService.createOrder(anyLong(), anyList())).willReturn(1L);
 
         Long memberId = 1L;
@@ -108,7 +115,7 @@ class OrderControllerTest {
 
 //    @Test
 //    @DisplayName("주문 취소에 성공한다.")
-//    void cancel() throws Exception{
+//    void cancelOrder() throws Exception{
 //        Order canceledOrder = Order.builder()
 //                .id(1L)
 //                .status(OrderStatus.CANCELED)

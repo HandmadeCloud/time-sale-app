@@ -24,7 +24,7 @@ public class Order extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
-    private Long id;
+    private Long orderId;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
@@ -41,36 +41,36 @@ public class Order extends BaseTimeEntity {
     private int totalQuantity;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private OrderStatus orderStatus;
 
     public static Order createOrder(Member member, List<OrderProduct> orderProducts) {
         return Order.builder()
                 .member(member)
                 .orderProducts(orderProducts)
-                .status(ACCEPTED)
+                .orderStatus(ACCEPTED)
                 .totalPrice(calculateTotalPrice(orderProducts))
                 .totalQuantity(calculateTotalQuantity(orderProducts))
                 .build();
     }
 
     public void cancel(){
-        this.status = CANCELED;
+        this.orderStatus = CANCELED;
         for (OrderProduct orderProduct : orderProducts) {
             Product product = orderProduct.getProduct();
-            int canceledQuantity = orderProduct.getCount();
+            int canceledQuantity = orderProduct.getOrderProductCount();
             product.addStock(canceledQuantity);
         }
     }
 
     private static int calculateTotalPrice(List<OrderProduct> orderProducts){
         return orderProducts.stream()
-                .mapToInt(orderProduct -> orderProduct.getOrderPrice())
+                .mapToInt(orderProduct -> orderProduct.getOrderProductPrice())
                 .sum();
     }
 
     private static int calculateTotalQuantity(List<OrderProduct> orderProducts){
         return orderProducts.stream()
-                .mapToInt(orderProduct -> orderProduct.getCount())
+                .mapToInt(orderProduct -> orderProduct.getOrderProductCount())
                 .sum();
     }
 }

@@ -19,7 +19,8 @@ import static jakarta.persistence.FetchType.LAZY;
 public class OrderProduct {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "orderproduct_id")
+    private Long orderProductId;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "order_id")
@@ -29,15 +30,15 @@ public class OrderProduct {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    private int orderPrice;
+    private int orderProductPrice;
 
-    private int count;
+    private int orderProductCount;
 
     public static OrderProduct createOrderProduct(Product product, int price, int count) {
         OrderProduct orderProduct = OrderProduct.builder()
                 .product(product)
-                .orderPrice(price * count)
-                .count(count)
+                .orderProductPrice(price * count)
+                .orderProductCount(count)
                 .build();
         product.deductStock(count);
 

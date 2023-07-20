@@ -14,14 +14,14 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/members") //검증 끝
+@RequestMapping("/api/v1/members")
 public class MemberController {
 
     private final MemberService memberService;
 
     @GetMapping("")
-    public ResponseTemplate<List<Member>> getAll(){
-        return ResponseTemplate.valueOf(memberService.getAllMembers());
+    public ResponseTemplate<List<Member>> getMembers(){
+        return ResponseTemplate.valueOf(memberService.getMembers());
     }
 
     @PostMapping("/signup")
@@ -29,14 +29,14 @@ public class MemberController {
         return ResponseTemplate.valueOf(memberService.join(signUpDto));
     }
 
-    @PatchMapping("/update/{id}")
-    public ResponseTemplate<MemberDto> correct(@PathVariable Long id, @RequestBody MemberUpdateDto memberUpdateDto){
-        MemberDto memberDto = memberService.correct(id, memberUpdateDto);
+    @PatchMapping("/update/{memberId}")
+    public ResponseTemplate<MemberDto> updateMember(@PathVariable Long memberId, @RequestBody MemberUpdateDto memberUpdateDto){
+        MemberDto memberDto = memberService.updateMember(memberId, memberUpdateDto);
         return ResponseTemplate.valueOf(memberDto);
     }
 
-    @PatchMapping("/delete/{id}")
-    public ResponseTemplate<MemberDto> delete(@PathVariable Long id){
-        return ResponseTemplate.valueOf(memberService.delete(id));
+    @PatchMapping("/delete/{memberId}")
+    public ResponseTemplate<MemberDto> deleteMember(@PathVariable Long memberId){
+        return ResponseTemplate.valueOf(memberService.deleteMember(memberId));
     }
 }

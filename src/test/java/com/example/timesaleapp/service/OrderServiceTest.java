@@ -18,14 +18,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
@@ -46,6 +42,8 @@ class OrderServiceTest {
     private Product product2;
     private Member member1;
     private Order order1;
+    private OrderProduct orderProduct1;
+    private OrderProduct orderProduct2;
     private List<Order> orders = new ArrayList<>();
 
     @BeforeEach
@@ -55,13 +53,13 @@ class OrderServiceTest {
         product2 = mock(Product.class);
         member1 = mock(Member.class);
 
-        OrderProduct orderProduct1 = OrderProduct.builder()
+        orderProduct1 = OrderProduct.builder()
                 .product(product1)
                 .orderPrice(1000)
                 .count(1)
                 .build();
 
-        OrderProduct orderProduct2 = OrderProduct.builder()
+        orderProduct2 = OrderProduct.builder()
                 .product(product2)
                 .orderPrice(2000)
                 .count(2)
@@ -96,18 +94,18 @@ class OrderServiceTest {
 
     @Test
     @DisplayName("주문 정보를 전체 조회할 수 있다.")
-    void getAllOrders() {
+    void getOrders() {
         // given
         given(orderRepository.findAll()).willReturn(orders);
         // when
-        List<Order> allOrders = orderService.getAllOrders();
+        List<Order> allOrders = orderService.getOrders();
         // then
         Assertions.assertThat(allOrders).isEqualTo(orders);
     }
 
 //    @Test
 //    @DisplayName("주문 정보를 취소할 수 있다.")
-//    void cancel() {
+//    void cancelOrder() {
 //        // given
 //        given(orderRepository.findById(anyLong())).willReturn(Optional.ofNullable(order1));
 //        // when

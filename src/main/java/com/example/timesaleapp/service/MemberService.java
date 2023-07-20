@@ -22,21 +22,21 @@ public class MemberService {
 
     public Long join(MemberSignUpDto signUpDto) {
         Member member = Member.of(signUpDto);
-        return memberRepository.save(member).getId();
+        return memberRepository.save(member).getMemberId();
     }
 
-    public List<Member> getAllMembers() {
+    public List<Member> getMembers() {
         return memberRepository.findAll();
     }
 
     @Transactional
-    public MemberDto correct(Long id, MemberUpdateDto memberUpdateDto) {
+    public MemberDto updateMember(Long id, MemberUpdateDto memberUpdateDto) {
         Member member = memberRepository.findById(id).orElseThrow(MyAppNotFoundException::new);
         member.update(memberUpdateDto);
         return MemberDto.of(member);
     }
 
-    public MemberDto delete(Long id) {
+    public MemberDto deleteMember(Long id) {
         Member member = memberRepository.findById(id).orElseThrow(MyAppNotFoundException::new);
         member.changeStatusDeleted();
         return MemberDto.of(member);

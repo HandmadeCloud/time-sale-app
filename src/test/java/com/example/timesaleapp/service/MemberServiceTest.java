@@ -50,6 +50,7 @@ class MemberServiceTest {
                 .email("min@min.com")
                 .password("minmin123!")
                 .nickName("minmin")
+                .memberStatus(DELETED)
                 .build();
 
         members = Arrays.asList(member1, member2);
@@ -69,23 +70,23 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("사용자 조회에 성공한다.")
-    void getAllMembers() {
+    void getMembers() {
         //given
         given(memberRepository.findAll()).willReturn(members);
         //when
-        List<Member> allMembers = memberService.getAllMembers();
+        List<Member> allMembers = memberService.getMembers();
         //then
         assertThat(allMembers).isEqualTo(members);
     }
 
     @Test
     @DisplayName("사용자 정보 수정에 성공한다.")
-    void correct() {
+    void updateMember() {
         //given
         MemberUpdateDto updateDto = new MemberUpdateDto("min@min.com", "minmin123!", "minmin");
         given(memberRepository.findById(anyLong())).willReturn(Optional.ofNullable(member2));
         //when
-        MemberDto updatedMemberDto = memberService.correct(1L,updateDto);
+        MemberDto updatedMemberDto = memberService.updateMember(1L,updateDto);
         //then
         assertThat(updatedMemberDto.getNickName()).isEqualTo("minmin");
         assertThat(updatedMemberDto.getEmail()).isEqualTo("min@min.com");
@@ -93,18 +94,11 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("사용자 정보를 삭제로 변경한다.")
-    void delete() {
+    void deleteMember() {
         //given
-        Member deletedMember = Member.builder()
-                .id(1L)
-                .email("test@test.com")
-                .password("hihihi123!")
-                .nickName("hihi")
-                .memberStatus(DELETED)
-                .build();
-        given(memberRepository.findById(anyLong())).willReturn(Optional.ofNullable(deletedMember));
+        given(memberRepository.findById(anyLong())).willReturn(Optional.ofNullable(member2));
         //when
-        MemberDto deletedMemberDto = memberService.delete(1L);
+        MemberDto deletedMemberDto = memberService.deleteMember(1L);
         //then
         assertThat(deletedMemberDto.getMemberStatus()).isEqualTo(DELETED);
     }

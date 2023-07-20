@@ -5,6 +5,7 @@ import com.example.timesaleapp.domain.member.dto.MemberSignUpDto;
 import com.example.timesaleapp.domain.member.dto.MemberUpdateDto;
 import com.example.timesaleapp.domain.order.Order;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,12 +25,15 @@ public class Member extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
-    private Long id;
+    private Long memberId;
 
+    @NotBlank
     private String email;
 
+    @NotBlank
     private String password;
 
+    @NotBlank
     private String nickName;
 
     @OneToMany(mappedBy = "member")

@@ -44,14 +44,16 @@ class ProductControllerTest {
     private List<Product> products;
     private ProductRegisterDto registerDto;
     private ProductUpdateDto updateDto;
+    private Product product1;
+    private Product product2;
 
     @BeforeEach
     public void setUp(){
         registerDto = new ProductRegisterDto("헤르미온느의 책", BOOK, "harrypotterImage", 100000, 1000, FREE_DELIVERY);
         updateDto = new ProductUpdateDto("해리포터 아빠 지팡이", null, null, null, null, null);
 
-        Product product1 = Product.builder()
-                                .name("해리포터 지팡이")
+        product1 = Product.builder()
+                                .name("해리포터 아빠 지팡이")
                                 .category(MAGIC)
                                 .mainImage("http://naver.com")
                                 .price(1000)
@@ -60,13 +62,13 @@ class ProductControllerTest {
                                 .tag(FREE_DELIVERY)
                                 .build();
 
-        Product product2 = Product.builder()
+        product2 = Product.builder()
                                 .name("볼드모트 지팡이")
                                 .category(MAGIC)
                                 .mainImage("http://naver2.com")
                                 .price(10000)
                                 .stockQuantity(200)
-                                .productStatus(ON_SALE)
+                                .productStatus(NOT_FOR_SALE)
                                 .tag(FREE_DELIVERY)
                                 .build();
 
@@ -75,9 +77,9 @@ class ProductControllerTest {
 
     @Test
     @DisplayName("상품 전체 조회에 성공한다.")
-    void getAll() throws Exception {
+    void getProducts() throws Exception {
         //given
-        given(productService.getAllProducts()).willReturn(products);
+        given(productService.getProducts()).willReturn(products);
 
         //when,then
         mvc.perform(get("/api/v1/products"))
@@ -90,9 +92,10 @@ class ProductControllerTest {
 
     @Test
     @DisplayName("상품 등록에 성공한다.")
-    void register() throws Exception{
-        given(productService.register(any(ProductRegisterDto.class))).willReturn(1L);
-
+    void registerProduct() throws Exception{
+        //given
+        given(productService.registerProduct(any(ProductRegisterDto.class))).willReturn(1L);
+        //when,then
         mvc.perform(post("/api/v1/products/new")
                         .contentType(APPLICATION_JSON)
                         .content(asJsonString(registerDto)))
@@ -103,14 +106,9 @@ class ProductControllerTest {
 
     @Test
     @DisplayName("상품정보 수정에 성공한다.")
-    void correct() throws Exception{
+    void updateProduct() throws Exception{
         //given
-        Product updatedProduct = Product.builder()
-                                .name("해리포터 아빠 지팡이")
-                                .build();
-
-        given(productService.correct(anyLong(), any(ProductUpdateDto.class))).willReturn(ProductDto.of(updatedProduct));
-
+        given(productService.updateProduct(anyLong(), any(ProductUpdateDto.class))).willReturn(ProductDto.of(product1));
         //when,then
         mvc.perform(patch("/api/v1/products/update/{id}", 1)
                         .contentType(APPLICATION_JSON)
@@ -122,20 +120,12 @@ class ProductControllerTest {
 
     @Test
     @DisplayName("상햪 정보 삭제 상태변경에 성공한다.")
-    void delete() throws Exception {
+    void deleteProduct() throws Exception {
         //given
-        Product deletedProduct = Product.builder()
-                                .name("호크룩스")
-                                .category(MAGIC)
-                                .price(1000)
-                                .stockQuantity(10)
-                                .productStatus(NOT_FOR_SALE)
-                                .build();
-
-        given(productService.delete(anyLong())).willReturn(ProductDto.of(deletedProduct));
+        given(productService.deleteProduct(anyLong())).willReturn(ProductDto.of(product2));
 
         //when,then
-        mvc.perform(patch("/api/v1/products/delete/{id}",1)
+        mvc.perform(patch("/api/v1/products/delete/{id}",2)
                         .contentType(APPLICATION_JSON))
                         .andExpect(status().isOk())
                         .andExpect(content().contentType(APPLICATION_JSON))

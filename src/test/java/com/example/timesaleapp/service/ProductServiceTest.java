@@ -58,7 +58,7 @@ class ProductServiceTest {
                 .mainImage("http://naver2.com")
                 .price(10000)
                 .stockQuantity(200)
-                .productStatus(ON_SALE)
+                .productStatus(NOT_FOR_SALE)
                 .tag(FREE_DELIVERY)
                 .build();
 
@@ -73,18 +73,18 @@ class ProductServiceTest {
                                                                 1000, 100, FREE_DELIVERY);
         given(productRepository.save(any(Product.class))).willReturn(product1);
         //when
-        Long productId = productService.register(registerDto);
+        Long productId = productService.registerProduct(registerDto);
         //then
         assertThat(productId).isEqualTo(1L);
     }
 
     @Test
     @DisplayName("전체 상품 조회에 성공한다.")
-    void getAllProducts() {
+    void getProducts() {
         //given
         given(productRepository.findAll()).willReturn(products);
         //when
-        List<Product> allProducts = productService.getAllProducts();
+        List<Product> allProducts = productService.getProducts();
         //then
         assertThat(allProducts).isEqualTo(products);
     }
@@ -100,7 +100,7 @@ class ProductServiceTest {
         ProductUpdateDto updateDto = new ProductUpdateDto("해리포터 아빠 지팡이", MAGIC, "http://naver2.com", 1000, 100, FREE_DELIVERY);
         given(productRepository.findById(anyLong())).willReturn(Optional.ofNullable(product1));
         //when
-        ProductDto updatedProductDto = productService.correct(1L, updateDto);
+        ProductDto updatedProductDto = productService.updateProduct(1L, updateDto);
         //then
         assertThat(updatedProductDto.getName()).isEqualTo("해리포터 아빠 지팡이");
         assertThat(updatedProductDto.getMainImage()).isEqualTo("http://naver2.com");
@@ -108,21 +108,11 @@ class ProductServiceTest {
 
     @Test
     @DisplayName("상품 삭제에 성공한다.")
-    void delete() {
+    void deleteProduct() {
         //given
-        Product deletedProduct = Product.builder()
-                .id(1L)
-                .name("해리포터 지팡이")
-                .category(MAGIC)
-                .mainImage("http://naver.com")
-                .price(1000)
-                .stockQuantity(100)
-                .productStatus(NOT_FOR_SALE)
-                .tag(FREE_DELIVERY)
-                .build();
-        given(productRepository.findById(anyLong())).willReturn(Optional.ofNullable(deletedProduct));
+        given(productRepository.findById(anyLong())).willReturn(Optional.ofNullable(product2));
         //when
-        ProductDto deletedProductDto = productService.delete(1L);
+        ProductDto deletedProductDto = productService.deleteProduct(2L);
         //then
         assertThat(deletedProductDto.getProductStatus()).isEqualTo(NOT_FOR_SALE);
     }

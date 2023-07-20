@@ -20,14 +20,14 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/new")
-    public ResponseTemplate<Long> create(@RequestParam("memberId") Long memberId,
+    public ResponseTemplate<Long> createOrder(@RequestParam("memberId") Long memberId,
                                         @RequestBody List<OrderProductCreateDto> orderProducts) {
         return ResponseTemplate.valueOf(orderService.createOrder(memberId, orderProducts));
     }
 
     @GetMapping("")
-    public ResponseTemplate<List<Order>> getAll(){
-        return ResponseTemplate.valueOf(orderService.getAllOrders());
+    public ResponseTemplate<List<Order>> getOrders(){
+        return ResponseTemplate.valueOf(orderService.getOrders());
     }
 
 //    @PatchMapping("/{id}/update")
@@ -35,9 +35,9 @@ public class OrderController {
 //        return ResponseTemplate.valueOf(orderService.correct(id));
 //    }
 
-    @PatchMapping("/delete/{id}")
-    public ResponseTemplate<OrderDto> cancel(@PathVariable Long orderId){
-        return ResponseTemplate.valueOf(orderService.cancel(orderId));
+    @PatchMapping("/delete/{orderId}")
+    public ResponseTemplate<OrderDto> cancelOrder(@PathVariable Long orderId){
+        return ResponseTemplate.valueOf(orderService.cancelOrder(orderId));
     }
 
 }

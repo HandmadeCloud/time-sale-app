@@ -20,22 +20,22 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("")
-    public ResponseTemplate<List<Product>> getAll(){
-        return ResponseTemplate.valueOf(productService.getAllProducts());
+    public ResponseTemplate<List<Product>> getProducts(){
+        return ResponseTemplate.valueOf(productService.getProducts());
     }
 
     @PostMapping("/new")
-    public ResponseTemplate<Long> register(@RequestBody ProductRegisterDto registerDto){
-        return ResponseTemplate.valueOf(productService.register(registerDto));
+    public ResponseTemplate<Long> registerProduct(@RequestBody ProductRegisterDto registerDto){
+        return ResponseTemplate.valueOf(productService.registerProduct(registerDto));
     }
 
-    @PatchMapping("/update/{id}")
-    public ResponseTemplate<ProductDto> correct(@PathVariable Long id, @RequestBody ProductUpdateDto productUpdateDto ){
-        return ResponseTemplate.valueOf(productService.correct(id, productUpdateDto));
+    @PatchMapping("/update/{productId}")
+    public ResponseTemplate<ProductDto> updateProduct(@PathVariable Long productId, @RequestBody ProductUpdateDto productUpdateDto ){
+        return ResponseTemplate.valueOf(productService.updateProduct(productId, productUpdateDto));
     }
 
-    @PatchMapping("/delete/{id}")
-    public ResponseTemplate<ProductDto> delete(@PathVariable Long id){
-        return ResponseTemplate.valueOf(productService.delete(id));
+    @PatchMapping("/delete/{productId}")
+    public ResponseTemplate<ProductDto> deleteProduct(@PathVariable Long productId){
+        return ResponseTemplate.valueOf(productService.deleteProduct(productId));
     }
 }
