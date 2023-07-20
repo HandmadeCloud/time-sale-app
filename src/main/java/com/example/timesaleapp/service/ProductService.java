@@ -23,8 +23,7 @@ public class ProductService {
     @Transactional
     public Long register(ProductRegisterDto registerDto) {
         Product product = Product.of(registerDto);
-        productRepository.save(product);
-        return product.getId();
+        return productRepository.save(product).getId();
     }
 
     public List<Product> getAllProducts(){

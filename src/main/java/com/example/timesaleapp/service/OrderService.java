@@ -38,18 +38,18 @@ public class OrderService {
                 .collect(Collectors.toList());
 
         Order order = Order.createOrder(member, orderProducts);
-        orderRepository.save(order);
-        return order.getId();
+        return orderRepository.save(order).getId();
     }
 
     public List<Order> getAllOrders() {
         return orderRepository.findAll();
     }
 
+    @Transactional
     public OrderDto cancel(Long id) {
         Order order = orderRepository.findById(id).orElseThrow(MyAppNotFoundException::new);
         order.cancel();
-        return null;
+        return OrderDto.of(order);
     }
 
 //    public void correct(Long id, OrderProductUpdateDto orderProductUpdateDto){

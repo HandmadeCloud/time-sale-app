@@ -22,8 +22,7 @@ public class MemberService {
 
     public Long join(MemberSignUpDto signUpDto) {
         Member member = Member.of(signUpDto);
-        memberRepository.save(member);
-        return member.getId();
+        return memberRepository.save(member).getId();
     }
 
     public List<Member> getAllMembers() {

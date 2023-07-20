@@ -20,6 +20,7 @@ import java.util.List;
 import static com.example.timesaleapp.domain.member.MemberStatus.DELETED;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -64,7 +65,7 @@ class MemberControllerTest {
     @DisplayName("멤버 전체 조회에 성공한다.")
     void getAllMembers() throws Exception {
         //given
-        when(memberService.getAllMembers()).thenReturn(members);
+        given(memberService.getAllMembers()).willReturn(members);
 
         //when
         mvc.perform(get("/api/v1/members")
@@ -80,7 +81,7 @@ class MemberControllerTest {
     @DisplayName("회원가입에 성공한다.")
     void signUp() throws Exception{
         //given
-        when(memberService.join(any(MemberSignUpDto.class))).thenReturn(1L);
+        given(memberService.join(any(MemberSignUpDto.class))).willReturn(1L);
 
         //when, then
         mvc.perform(post("/api/v1/members/signup")
@@ -101,7 +102,7 @@ class MemberControllerTest {
                 .nickName("heehee")
                 .build();
                                     //수정하는 내용 보내는 값을 any    //원본
-        when(memberService.correct(anyLong(), any(MemberUpdateDto.class))).thenReturn(MemberDto.of(updatedMember));
+        given(memberService.correct(anyLong(), any(MemberUpdateDto.class))).willReturn(MemberDto.of(updatedMember));
 
         //when,then
         mvc.perform(patch("/api/v1/members/update/{id}", 1)
@@ -125,7 +126,7 @@ class MemberControllerTest {
                 .memberStatus(DELETED)
                 .build();
 
-        when(memberService.delete(anyLong())).thenReturn(MemberDto.of(deletedMember));
+        given(memberService.delete(anyLong())).willReturn(MemberDto.of(deletedMember));
 
         //when, then
         mvc.perform(patch("/api/v1/members/delete/{id}", 1)

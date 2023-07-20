@@ -22,6 +22,7 @@ import static com.example.timesaleapp.domain.product.Category.MAGIC;
 import static com.example.timesaleapp.domain.product.ProductStatus.*;
 import static com.example.timesaleapp.domain.product.ProductStatus.ON_SALE;
 import static com.example.timesaleapp.domain.product.Tag.FREE_DELIVERY;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -76,11 +77,10 @@ class ProductControllerTest {
     @DisplayName("상품 전체 조회에 성공한다.")
     void getAll() throws Exception {
         //given
-        when(productService.getAllProducts()).thenReturn(products);
+        given(productService.getAllProducts()).willReturn(products);
 
         //when,then
-        mvc.perform(get("/api/v1/products")
-                    .contentType(APPLICATION_JSON)) // 요청에 관한 정보 전달
+        mvc.perform(get("/api/v1/products"))
                     .andExpect(status().isOk()) // 응답을 기대하는 부분
                     .andExpect(jsonPath("$.data").isArray())
                     .andExpect(jsonPath("$.data[0].name").value("해리포터 지팡이"))
@@ -91,7 +91,7 @@ class ProductControllerTest {
     @Test
     @DisplayName("상품 등록에 성공한다.")
     void register() throws Exception{
-        when(productService.register(any(ProductRegisterDto.class))).thenReturn(1L);
+        given(productService.register(any(ProductRegisterDto.class))).willReturn(1L);
 
         mvc.perform(post("/api/v1/products/new")
                         .contentType(APPLICATION_JSON)
@@ -109,7 +109,7 @@ class ProductControllerTest {
                                 .name("해리포터 아빠 지팡이")
                                 .build();
 
-        when(productService.correct(anyLong(), any(ProductUpdateDto.class))).thenReturn(ProductDto.of(updatedProduct));
+        given(productService.correct(anyLong(), any(ProductUpdateDto.class))).willReturn(ProductDto.of(updatedProduct));
 
         //when,then
         mvc.perform(patch("/api/v1/products/update/{id}", 1)
@@ -117,7 +117,7 @@ class ProductControllerTest {
                         .content(asJsonString(updateDto)))
                         .andExpect(status().isOk())
                         .andExpect(content().contentType(APPLICATION_JSON))
-                        .andExpect(jsonPath("$.data.name").value("해리포터 아빠 지팡사"));
+                        .andExpect(jsonPath("$.data.name").value("해리포터 아빠 지팡이"));
     }
 
     @Test
@@ -132,7 +132,7 @@ class ProductControllerTest {
                                 .productStatus(NOT_FOR_SALE)
                                 .build();
 
-        when(productService.delete(anyLong())).thenReturn(ProductDto.of(deletedProduct));
+        given(productService.delete(anyLong())).willReturn(ProductDto.of(deletedProduct));
 
         //when,then
         mvc.perform(patch("/api/v1/products/delete/{id}",1)

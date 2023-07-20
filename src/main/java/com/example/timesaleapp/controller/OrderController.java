@@ -35,10 +35,9 @@ public class OrderController {
 //        return ResponseTemplate.valueOf(orderService.correct(id));
 //    }
 
-
-    @PatchMapping("/{id}/delete")
-    public ResponseTemplate<OrderDto> cancel(@PathVariable Long id){
-        return ResponseTemplate.valueOf(orderService.cancel(id));
+    @PatchMapping("/delete/{id}")
+    public ResponseTemplate<OrderDto> cancel(@PathVariable Long orderId){
+        return ResponseTemplate.valueOf(orderService.cancel(orderId));
     }
 
 }

@@ -32,7 +32,8 @@ public enum ResponseTemplateStatus {
     /**
      * 전체 오류
      */
-    NOT_FOUND(HttpStatus.NOT_FOUND, 900, "해당하는 정보가 없습니다." );
+    NOT_FOUND(HttpStatus.NOT_FOUND, 900, "해당하는 정보가 없습니다." ),
+    LOGICAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 901, "서버 내부 에러");
 
     private HttpStatus httpStatus;
     private final int code;
