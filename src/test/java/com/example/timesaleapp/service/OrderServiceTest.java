@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
@@ -55,20 +57,20 @@ class OrderServiceTest {
 
         orderProduct1 = OrderProduct.builder()
                 .product(product1)
-                .orderPrice(1000)
-                .count(1)
+                .orderProductPrice(1000)
+                .orderProductCount(1)
                 .build();
 
         orderProduct2 = OrderProduct.builder()
                 .product(product2)
-                .orderPrice(2000)
-                .count(2)
+                .orderProductPrice(2000)
+                .orderProductCount(2)
                 .build();
 
         // Order 객체 생성 및 주문 상품 추가
         order1 = Order.builder()
-                .id(1L)
-                .status(OrderStatus.ACCEPTED)
+                .orderId(1L)
+                .orderStatus(OrderStatus.ACCEPTED)
                 .member(member1)
                 .orderProducts(Arrays.asList(orderProduct1, orderProduct2))
                 .build();
@@ -89,7 +91,7 @@ class OrderServiceTest {
         // when
         Long orderId = orderService.createOrder(1L, createDtos);
         // then
-        Assertions.assertThat(orderId).isEqualTo(1L);
+        assertThat(orderId).isEqualTo(1L);
     }
 
     @Test
@@ -100,17 +102,17 @@ class OrderServiceTest {
         // when
         List<Order> allOrders = orderService.getOrders();
         // then
-        Assertions.assertThat(allOrders).isEqualTo(orders);
+        assertThat(allOrders).isEqualTo(orders);
     }
 
-//    @Test
-//    @DisplayName("주문 정보를 취소할 수 있다.")
-//    void cancelOrder() {
-//        // given
-//        given(orderRepository.findById(anyLong())).willReturn(Optional.ofNullable(order1));
-//        // when
-//        OrderDto canceledDto = orderService.cancel(1L);
-//        // then
-//        Assertions.assertThat()
-//    }
+    @Test
+    @DisplayName("주문 정보를 취소할 수 있다.")
+    void cancelOrder() {
+        // given
+        given(orderRepository.findById(anyLong())).willReturn(Optional.ofNullable(order1));
+        // when
+        OrderDto canceledDto = orderService.cancelOrder(1L);
+        // then
+        assertThat(canceledDto.getOrderProducts()).isEqualTo(OrderDto.of(order1).getOrderProducts());
+    }
 }

@@ -9,6 +9,7 @@ import com.example.timesaleapp.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @Slf4j
@@ -20,22 +21,26 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("")
-    public ResponseTemplate<List<Product>> getProducts(){
+    public ResponseTemplate<List<ProductDto>> getProducts() {
+
         return ResponseTemplate.valueOf(productService.getProducts());
     }
 
     @PostMapping("/new")
-    public ResponseTemplate<Long> registerProduct(@RequestBody ProductRegisterDto registerDto){
+    public ResponseTemplate<Long> registerProduct(@RequestBody ProductRegisterDto registerDto) {
+
         return ResponseTemplate.valueOf(productService.registerProduct(registerDto));
     }
 
     @PatchMapping("/update/{productId}")
-    public ResponseTemplate<ProductDto> updateProduct(@PathVariable Long productId, @RequestBody ProductUpdateDto productUpdateDto ){
+    public ResponseTemplate<ProductDto> updateProduct(@PathVariable Long productId, @RequestBody ProductUpdateDto productUpdateDto) {
+
         return ResponseTemplate.valueOf(productService.updateProduct(productId, productUpdateDto));
     }
 
     @PatchMapping("/delete/{productId}")
-    public ResponseTemplate<ProductDto> deleteProduct(@PathVariable Long productId){
+    public ResponseTemplate<ProductDto> deleteProduct(@PathVariable Long productId) {
+
         return ResponseTemplate.valueOf(productService.deleteProduct(productId));
     }
 }

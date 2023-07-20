@@ -76,6 +76,7 @@ public class Product extends BaseTimeEntity {
     }
 
     public static Product of(ProductRegisterDto registerDto) {
+
         return Product.builder()
                 .name(registerDto.name())
                 .category(registerDto.category())

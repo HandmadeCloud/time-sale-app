@@ -27,8 +27,9 @@ public class MemberDto {
     private LocalDateTime updatedAt;
 
     public static MemberDto of(Member member){
+
         return MemberDto.builder()
-                .id(member.getId())
+                .id(member.getMemberId())
                 .email(member.getEmail())
                 .password(member.getPassword())
                 .nickName(member.getNickName())

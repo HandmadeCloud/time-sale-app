@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.timesaleapp.domain.product.Category.BOOK;
 import static com.example.timesaleapp.domain.product.Category.MAGIC;
@@ -79,7 +80,8 @@ class ProductControllerTest {
     @DisplayName("상품 전체 조회에 성공한다.")
     void getProducts() throws Exception {
         //given
-        given(productService.getProducts()).willReturn(products);
+        List<ProductDto> productDtos = products.stream().map(ProductDto::of).collect(Collectors.toList());
+        given(productService.getProducts()).willReturn(productDtos);
 
         //when,then
         mvc.perform(get("/api/v1/products"))

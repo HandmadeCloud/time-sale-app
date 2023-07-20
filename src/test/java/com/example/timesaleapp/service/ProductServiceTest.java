@@ -41,7 +41,7 @@ class ProductServiceTest {
     @BeforeEach
     public void setUp(){
         product1 = Product.builder()
-                .id(1L)
+                .productId(1L)
                 .name("해리포터 지팡이")
                 .category(MAGIC)
                 .mainImage("http://naver.com")
@@ -52,7 +52,7 @@ class ProductServiceTest {
                 .build();
 
         product2 = Product.builder()
-                .id(2L)
+                .productId(2L)
                 .name("볼드모트 지팡이")
                 .category(MAGIC)
                 .mainImage("http://naver2.com")

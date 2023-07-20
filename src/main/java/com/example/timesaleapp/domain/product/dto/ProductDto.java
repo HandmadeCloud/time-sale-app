@@ -11,10 +11,11 @@ import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder @Getter
+@Builder
+@Getter
 public class ProductDto {
 
-    private Long id;
+    private Long productId;
     private String name;
     private Category category;
     private String mainImage;
@@ -24,8 +25,9 @@ public class ProductDto {
     private Tag tag;
 
     public static ProductDto of(Product product) {
+
         return ProductDto.builder()
-                .id(product.getId())
+                .productId(product.getProductId())
                 .name(product.getName())
                 .category(product.getCategory())
                 .mainImage(product.getMainImage())

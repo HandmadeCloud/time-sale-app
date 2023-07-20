@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum MemberStatus {
 
-    ACTIVE("Active",0),
-    DELETED("Deleted",1);
+    ACTIVE("Active", 0),
+    DELETED("Deleted", 1);
 
     private final String statusKey;
     private final int statusNum;

@@ -39,14 +39,14 @@ class MemberServiceTest {
     @BeforeEach
     public void setUp(){
         member1 = Member.builder()
-                .id(1L)
+                .memberId(1L)
                 .email("test@test.com")
                 .password("hihihi123!")
                 .nickName("hihi")
                 .build();
 
         member2 = Member.builder()
-                .id(2L)
+                .memberId(2L)
                 .email("min@min.com")
                 .password("minmin123!")
                 .nickName("minmin")

@@ -18,6 +18,7 @@ public enum ResponseTemplateStatus {
 
     EMAIL_FORM_INVALID(HttpStatus.BAD_REQUEST, 300, "유효하지 않은 이메일 형식입니다."),
     PASSWORD_FORM_INVALID(HttpStatus.BAD_REQUEST, 301, "유효하지 않은 비밀번호 형식입니다."),
+    EMAIL_DUPLICATE(HttpStatus.BAD_REQUEST, 302, "중복된 이메일입니다."),
 
     /**
      * product 관련 오류
@@ -32,7 +33,7 @@ public enum ResponseTemplateStatus {
     /**
      * 전체 오류
      */
-    NOT_FOUND(HttpStatus.NOT_FOUND, 900, "해당하는 정보가 없습니다." ),
+    NOT_FOUND(HttpStatus.NOT_FOUND, 900, "해당하는 정보가 없습니다."),
     LOGICAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 901, "서버 내부 에러");
 
     private HttpStatus httpStatus;

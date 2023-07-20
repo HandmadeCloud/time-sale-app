@@ -44,6 +44,7 @@ public class Order extends BaseTimeEntity {
     private OrderStatus orderStatus;
 
     public static Order createOrder(Member member, List<OrderProduct> orderProducts) {
+
         return Order.builder()
                 .member(member)
                 .orderProducts(orderProducts)
@@ -55,6 +56,7 @@ public class Order extends BaseTimeEntity {
 
     public void cancel(){
         this.orderStatus = CANCELED;
+
         for (OrderProduct orderProduct : orderProducts) {
             Product product = orderProduct.getProduct();
             int canceledQuantity = orderProduct.getOrderProductCount();
@@ -63,12 +65,14 @@ public class Order extends BaseTimeEntity {
     }
 
     private static int calculateTotalPrice(List<OrderProduct> orderProducts){
+
         return orderProducts.stream()
                 .mapToInt(orderProduct -> orderProduct.getOrderProductPrice())
                 .sum();
     }
 
     private static int calculateTotalQuantity(List<OrderProduct> orderProducts){
+
         return orderProducts.stream()
                 .mapToInt(orderProduct -> orderProduct.getOrderProductCount())
                 .sum();

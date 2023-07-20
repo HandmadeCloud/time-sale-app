@@ -1,7 +1,6 @@
 package com.example.timesaleapp.controller;
 
 import com.example.timesaleapp.config.ResponseTemplate;
-import com.example.timesaleapp.domain.order.Order;
 import com.example.timesaleapp.domain.order.dto.OrderDto;
 import com.example.timesaleapp.domain.order.dto.OrderProductCreateDto;
 import com.example.timesaleapp.service.OrderService;
@@ -21,12 +20,14 @@ public class OrderController {
 
     @PostMapping("/new")
     public ResponseTemplate<Long> createOrder(@RequestParam("memberId") Long memberId,
-                                        @RequestBody List<OrderProductCreateDto> orderProducts) {
+                                              @RequestBody List<OrderProductCreateDto> orderProducts) {
+
         return ResponseTemplate.valueOf(orderService.createOrder(memberId, orderProducts));
     }
 
     @GetMapping("")
-    public ResponseTemplate<List<Order>> getOrders(){
+    public ResponseTemplate<List<OrderDto>> getOrders() {
+
         return ResponseTemplate.valueOf(orderService.getOrders());
     }
 
@@ -36,7 +37,8 @@ public class OrderController {
 //    }
 
     @PatchMapping("/delete/{orderId}")
-    public ResponseTemplate<OrderDto> cancelOrder(@PathVariable Long orderId){
+    public ResponseTemplate<OrderDto> cancelOrder(@PathVariable Long orderId) {
+
         return ResponseTemplate.valueOf(orderService.cancelOrder(orderId));
     }
 

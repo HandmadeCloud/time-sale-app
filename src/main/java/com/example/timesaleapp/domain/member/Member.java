@@ -4,6 +4,7 @@ import com.example.timesaleapp.domain.BaseTimeEntity;
 import com.example.timesaleapp.domain.member.dto.MemberSignUpDto;
 import com.example.timesaleapp.domain.member.dto.MemberUpdateDto;
 import com.example.timesaleapp.domain.order.Order;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -16,14 +17,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.timesaleapp.domain.member.MemberStatus.ACTIVE;
+import static jakarta.persistence.FetchType.*;
 
-@Getter @Entity
-@Builder @Table(name="members")
-@AllArgsConstructor @DynamicUpdate
+@Getter
+@Entity
+@Builder
+@Table(name = "members")
+@AllArgsConstructor
+@DynamicUpdate
 @NoArgsConstructor
 public class Member extends BaseTimeEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long memberId;
 
@@ -36,24 +42,25 @@ public class Member extends BaseTimeEntity {
     @NotBlank
     private String nickName;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", fetch = LAZY)
     @Builder.Default
     private List<Order> orders = new ArrayList<>();
 
     @Enumerated(value = EnumType.STRING)
     private MemberStatus memberStatus;
 
-    public void changeStatusDeleted(){
+    public void changeStatusDeleted() {
         this.memberStatus = MemberStatus.DELETED;
     }
 
     public void update(MemberUpdateDto memberUpdateDto) {
-        this.email = validateUpdateString(memberUpdateDto.email(),this.email);
+        this.email = validateUpdateString(memberUpdateDto.email(), this.email);
         this.password = validateUpdateString(memberUpdateDto.password(), this.password);
         this.nickName = validateUpdateString(memberUpdateDto.nickName(), this.nickName);
     }
 
     public static Member of(MemberSignUpDto signUpDto) {
+
         return Member.builder()
                 .email(signUpDto.email())
                 .password(signUpDto.password())
@@ -64,8 +71,10 @@ public class Member extends BaseTimeEntity {
 
     private String validateUpdateString(String update, String origin) {
         if (update == null) {
+
             return origin;
         }
+
         return update;
     }
 }

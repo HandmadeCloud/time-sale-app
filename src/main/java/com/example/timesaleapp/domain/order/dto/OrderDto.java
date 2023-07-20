@@ -16,7 +16,7 @@ import java.util.List;
 @Builder @Getter
 public class OrderDto {
 
-    private Long id;
+    private Long orderId;
     private Member member;
     private List<OrderProduct> orderProducts;
     private int totalPrice;
@@ -24,11 +24,12 @@ public class OrderDto {
     private OrderStatus orderStatus;
 
     public static OrderDto of(Order order){
+
         return OrderDto.builder()
-                .id(order.getId())
+                .orderId(order.getOrderId())
                 .member(order.getMember())
                 .orderProducts(order.getOrderProducts())
-                .orderStatus(order.getStatus())
+                .orderStatus(order.getOrderStatus())
                 .totalPrice(order.getTotalPrice())
                 .totalQuantity(order.getTotalQuantity())
                 .build();

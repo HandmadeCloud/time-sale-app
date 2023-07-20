@@ -20,23 +20,26 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping("")
-    public ResponseTemplate<List<Member>> getMembers(){
+    public ResponseTemplate<List<MemberDto>> getMembers(){
+
         return ResponseTemplate.valueOf(memberService.getMembers());
     }
 
     @PostMapping("/signup")
     public ResponseTemplate<Long> signUp(@RequestBody MemberSignUpDto signUpDto){
-        return ResponseTemplate.valueOf(memberService.join(signUpDto));
+
+        return ResponseTemplate.valueOf(memberService.createMember(signUpDto));
     }
 
     @PatchMapping("/update/{memberId}")
     public ResponseTemplate<MemberDto> updateMember(@PathVariable Long memberId, @RequestBody MemberUpdateDto memberUpdateDto){
-        MemberDto memberDto = memberService.updateMember(memberId, memberUpdateDto);
-        return ResponseTemplate.valueOf(memberDto);
+
+        return ResponseTemplate.valueOf(memberService.updateMember(memberId, memberUpdateDto));
     }
 
     @PatchMapping("/delete/{memberId}")
     public ResponseTemplate<MemberDto> deleteMember(@PathVariable Long memberId){
+
         return ResponseTemplate.valueOf(memberService.deleteMember(memberId));
     }
 }

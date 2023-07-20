@@ -15,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.timesaleapp.domain.member.MemberStatus.DELETED;
 import static org.mockito.ArgumentMatchers.any;
@@ -45,14 +46,14 @@ class MemberControllerTest {
         updateDto = new MemberUpdateDto("hihi@hihi.com", "password1!", "heehee");
 
         member1 = Member.builder()
-                .id(1L)
+                .memberId(1L)
                 .email("test@test.com")
                 .password("hihihi123!")
                 .nickName("hihi")
                 .build();
 
         member2 = Member.builder()
-                .id(2L)
+                .memberId(2L)
                 .email("min@min.com")
                 .password("minmin123!")
                 .nickName("minmin")
@@ -66,7 +67,8 @@ class MemberControllerTest {
     @DisplayName("멤버 전체 조회에 성공한다.")
     void getMembers() throws Exception {
         //given
-        given(memberService.getMembers()).willReturn(members);
+        List<MemberDto> memberDtos = members.stream().map(MemberDto::of).collect(Collectors.toList());
+        given(memberService.getMembers()).willReturn(memberDtos);
 
         //when
         mvc.perform(get("/api/v1/members")
@@ -82,7 +84,7 @@ class MemberControllerTest {
     @DisplayName("회원가입에 성공한다.")
     void signUp() throws Exception{
         //given
-        given(memberService.join(any(MemberSignUpDto.class))).willReturn(1L);
+        given(memberService.createMember(any(MemberSignUpDto.class))).willReturn(1L);
 
         //when, then
         mvc.perform(post("/api/v1/members/signup")
@@ -126,6 +128,7 @@ class MemberControllerTest {
 
     private String asJsonString(Object obj) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
+
         return mapper.writeValueAsString(obj);
     }
 

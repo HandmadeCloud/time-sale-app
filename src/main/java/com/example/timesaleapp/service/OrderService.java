@@ -33,22 +33,27 @@ public class OrderService {
         List<OrderProduct> orderProducts = orderProductCreateDtos.stream()
                 .map(orderProductCreateDto -> {
                     Product product = productRepository.findById(orderProductCreateDto.productId()).orElseThrow(MyAppNotFoundException::new);
+
                     return OrderProduct.createOrderProduct(product, product.getPrice(), orderProductCreateDto.count());
                 })
                 .collect(Collectors.toList());
 
         Order order = Order.createOrder(member, orderProducts);
+
         return orderRepository.save(order).getOrderId();
     }
 
-    public List<Order> getOrders() {
-        return orderRepository.findAll();
+    public List<OrderDto> getOrders() {
+        List<Order> orders = orderRepository.findAll();
+
+        return orders.stream().map(OrderDto::of).collect(Collectors.toList());
     }
 
     @Transactional
     public OrderDto cancelOrder(Long id) {
         Order order = orderRepository.findById(id).orElseThrow(MyAppNotFoundException::new);
         order.cancel();
+
         return OrderDto.of(order);
     }
 

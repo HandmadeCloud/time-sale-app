@@ -21,7 +21,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import static com.example.timesaleapp.domain.order.OrderStatus.CANCELED;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -49,6 +51,7 @@ class OrderControllerTest {
     private OrderProduct orderProduct1;
     private OrderProduct orderProduct2;
     private Order order1;
+    private Order order2;
 
     @BeforeEach
     public void setUp(){
@@ -59,19 +62,24 @@ class OrderControllerTest {
 
         orderProduct1 = OrderProduct.builder()
                 .product(product1)
-                .orderPrice(1000)
-                .count(1)
+                .orderProductPrice(1000)
+                .orderProductCount(1)
                 .build();
 
         orderProduct2 = OrderProduct.builder()
                 .product(product2)
-                .orderPrice(2000)
-                .count(2)
+                .orderProductPrice(2000)
+                .orderProductCount(2)
                 .build();
 
         // Order 객체 생성 및 주문 상품 추가
         order1 = Order.builder()
-                .status(OrderStatus.ACCEPTED)
+                .orderStatus(OrderStatus.ACCEPTED)
+                .member(member1)
+                .orderProducts(Arrays.asList(orderProduct1, orderProduct2))
+                .build();
+        order2 = Order.builder()
+                .orderStatus(CANCELED)
                 .member(member1)
                 .orderProducts(Arrays.asList(orderProduct1, orderProduct2))
                 .build();
@@ -83,7 +91,8 @@ class OrderControllerTest {
     @DisplayName("주문 정보 전체 조회에 성공한다.")
     void getOrders() throws Exception {
         // Given
-        given(orderService.getOrders()).willReturn(orders);
+        List<OrderDto> orderDtos = orders.stream().map(OrderDto::of).collect(Collectors.toList());
+        given(orderService.getOrders()).willReturn(orderDtos);
 
         // When, Then
         mvc.perform(get("/api/v1/orders"))
@@ -113,25 +122,17 @@ class OrderControllerTest {
                 .andExpect(jsonPath("$.data").value(1L));
     }
 
-//    @Test
-//    @DisplayName("주문 취소에 성공한다.")
-//    void cancelOrder() throws Exception{
-//        Order canceledOrder = Order.builder()
-//                .id(1L)
-//                .status(OrderStatus.CANCELED)
-//                .member(mock(Member.class))
-//                .orderProducts(Collections.singletonList(mock(OrderProduct.class)))
-//                .build();
-//
-//        when(orderService.cancel(anyLong())).thenReturn(OrderDto.of(canceledOrder));
-//
-//        mvc.perform(patch("/api/v1/orders/delete/{id}", 1)
-//                .contentType(APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType(APPLICATION_JSON))
-//                .andExpect(jsonPath("$.data.status").value("CANCELED"));
-//
-//    }
+    @Test
+    @DisplayName("주문 취소에 성공한다.")
+    void cancelOrder() throws Exception{
+        when(orderService.cancelOrder(anyLong())).thenReturn(OrderDto.of(order2));
+
+        mvc.perform(patch("/api/v1/orders/delete/{id}", 1)
+                .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON))
+                .andExpect(jsonPath("$.data.orderStatus").value("CANCELED"));
+    }
 
     private String asJsonString(Object obj) throws Exception {
         ObjectMapper mapper = new ObjectMapper();

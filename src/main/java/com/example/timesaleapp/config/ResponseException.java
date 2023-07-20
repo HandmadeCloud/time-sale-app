@@ -6,6 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class ResponseException extends RuntimeException{
+public class ResponseException extends RuntimeException {
+
     private ResponseTemplateStatus responseTemplateStatus;
 }

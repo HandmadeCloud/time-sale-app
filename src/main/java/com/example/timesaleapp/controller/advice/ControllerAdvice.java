@@ -10,6 +10,7 @@ import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
+
 import java.io.IOException;
 
 @RestControllerAdvice("com.example.timesaleapp.controller")
@@ -20,10 +21,11 @@ public class ControllerAdvice {
      * 일반 응답 에러
      */
     @ExceptionHandler(ResponseException.class)
-    protected ResponseEntity<ResponseTemplate<ResponseTemplateStatus>> expect(ResponseException e){
+    protected ResponseEntity<ResponseTemplate<ResponseTemplateStatus>> expect(ResponseException e) {
         e.printStackTrace();
         log.info("Controller advice exception : {}", e);
         ResponseTemplateStatus status = e.getResponseTemplateStatus();
+
         return ResponseEntity.status(status.getHttpStatus())
                 .body(ResponseTemplate.of(status));
     }
@@ -32,9 +34,10 @@ public class ControllerAdvice {
      * 전체 응답 에러
      */
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<ResponseTemplate<Void>> expect(Exception e){
+    protected ResponseEntity<ResponseTemplate<Void>> expect(Exception e) {
         e.printStackTrace();
         log.info("Controller advice exception : {}", e);
+
         return ResponseEntity.badRequest()
                 .body(ResponseTemplate.error(ResponseTemplateStatus.LOGICAL_ERROR));
     }
@@ -45,6 +48,7 @@ public class ControllerAdvice {
     @ExceptionHandler(MissingRequestHeaderException.class)
     protected ResponseEntity<ResponseTemplate<Void>> handleMissingRequestHeaderException(MissingRequestHeaderException e) {
         log.error("Excepted MissingRequestHeaderException : {}", e.getMessage());
+
         return ResponseEntity.badRequest()
                 .body(ResponseTemplate.error(ResponseTemplateStatus.LOGICAL_ERROR));
     }
@@ -65,6 +69,7 @@ public class ControllerAdvice {
     @ExceptionHandler(NoHandlerFoundException.class)
     protected ResponseEntity<ResponseTemplate<Void>> handleNoHandlerFoundExceptionException(NoHandlerFoundException e) {
         log.error("handleNoHandlerFoundException : {}", e.getMessage());
+
         return ResponseEntity.badRequest()
                 .body(ResponseTemplate.error(ResponseTemplateStatus.NOT_FOUND));
     }
@@ -73,8 +78,9 @@ public class ControllerAdvice {
      * null 값이 발생한 경우
      */
     @ExceptionHandler(IOException.class)
-    protected ResponseEntity<ResponseTemplate<Void>> expect(IOException e){
+    protected ResponseEntity<ResponseTemplate<Void>> expect(IOException e) {
         log.error("handleIOException", e);
+
         return ResponseEntity.badRequest()
                 .body(ResponseTemplate.error(ResponseTemplateStatus.NOT_FOUND));
     }

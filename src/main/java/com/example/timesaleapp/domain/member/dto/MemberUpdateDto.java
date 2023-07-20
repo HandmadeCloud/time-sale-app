@@ -11,10 +11,10 @@ public record MemberUpdateDto(String email, String password, String nickName) im
 
     @Override
     public void validate() throws ResponseException {
-        if(!REGEX_EMAIL.matcher(this.email).matches()){
+        if (!REGEX_EMAIL.matcher(this.email).matches()) {
             throw new ResponseException(ResponseTemplateStatus.EMAIL_FORM_INVALID);
         }
-        if(!REGEX_PWD.matcher(this.password).matches()){
+        if (!REGEX_PWD.matcher(this.password).matches()) {
             throw new ResponseException(ResponseTemplateStatus.PASSWORD_FORM_INVALID);
         }
     }
