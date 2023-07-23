@@ -54,7 +54,7 @@ class ProductControllerTest {
         updateDto = new ProductUpdateDto("해리포터 아빠 지팡이", null, null, null, null, null);
 
         product1 = Product.builder()
-                                .name("해리포터 아빠 지팡이")
+                                .name("해리포터 지팡이")
                                 .category(MAGIC)
                                 .mainImage("http://naver.com")
                                 .price(1000)
@@ -64,7 +64,7 @@ class ProductControllerTest {
                                 .build();
 
         product2 = Product.builder()
-                                .name("볼드모트 지팡이")
+                                .name("해리포터 아빠 지팡이")
                                 .category(MAGIC)
                                 .mainImage("http://naver2.com")
                                 .price(10000)
@@ -110,9 +110,9 @@ class ProductControllerTest {
     @DisplayName("상품정보 수정에 성공한다.")
     void updateProduct() throws Exception{
         //given
-        given(productService.updateProduct(anyLong(), any(ProductUpdateDto.class))).willReturn(ProductDto.of(product1));
+        given(productService.updateProduct(anyLong(), any(ProductUpdateDto.class))).willReturn(ProductDto.of(product2));
         //when,then
-        mvc.perform(patch("/api/v1/products/update/{id}", 1)
+        mvc.perform(patch("/api/v1/products/{id}", 1)
                         .contentType(APPLICATION_JSON)
                         .content(asJsonString(updateDto)))
                         .andExpect(status().isOk())

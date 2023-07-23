@@ -102,14 +102,14 @@ class MemberControllerTest {
         given(memberService.updateMember(anyLong(), any(MemberUpdateDto.class))).willReturn(MemberDto.of(member1));
 
         //when,then
-        mvc.perform(patch("/api/v1/members/update/{id}", 1)
+        mvc.perform(patch("/api/v1/members/{id}", 1)
                 .contentType(APPLICATION_JSON)
                 .content(asJsonString(updateDto)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON))
                 .andExpect(jsonPath("$.data.email").value("test@test.com"))
-                .andExpect(jsonPath("$.data.password").value("password1!"))
-                .andExpect(jsonPath("$.data.nickName").value("heehee"));
+                .andExpect(jsonPath("$.data.password").value("hihihi123!"))
+                .andExpect(jsonPath("$.data.nickName").value("hihi"));
     }
 
     @Test

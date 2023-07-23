@@ -4,6 +4,7 @@ import com.example.timesaleapp.domain.member.Member;
 import com.example.timesaleapp.domain.member.dto.MemberDto;
 import com.example.timesaleapp.domain.member.dto.MemberSignUpDto;
 import com.example.timesaleapp.domain.member.dto.MemberUpdateDto;
+import com.example.timesaleapp.domain.order.dto.OrderDto;
 import com.example.timesaleapp.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.example.timesaleapp.domain.member.MemberStatus.ACTIVE;
 import static com.example.timesaleapp.domain.member.MemberStatus.DELETED;
@@ -63,7 +65,7 @@ class MemberServiceTest {
         MemberSignUpDto signUpDto = new MemberSignUpDto("test@test.com", "hihihi123!", "hihi");
         given(memberRepository.save(any(Member.class))).willReturn(member1);
         //when
-        Long memberId = memberService.join(signUpDto);
+        Long memberId = memberService.createMember(signUpDto);
         //then
         assertThat(memberId).isEqualTo(1L);
     }
@@ -74,9 +76,10 @@ class MemberServiceTest {
         //given
         given(memberRepository.findAll()).willReturn(members);
         //when
-        List<Member> allMembers = memberService.getMembers();
+        List<MemberDto> allMembers = memberService.getMembers();
         //then
-        assertThat(allMembers).isEqualTo(members);
+        assertThat(allMembers.get(0).getEmail()).isEqualTo("test@test.com");
+        assertThat(allMembers.get(1).getNickName()).isEqualTo("minmin");
     }
 
     @Test

@@ -73,6 +73,8 @@ class OrderServiceTest {
                 .orderStatus(OrderStatus.ACCEPTED)
                 .member(member1)
                 .orderProducts(Arrays.asList(orderProduct1, orderProduct2))
+                .totalPrice(orderProduct1.getOrderProductPrice()+orderProduct2.getOrderProductPrice())
+                .totalQuantity(orderProduct1.getOrderProductCount()+orderProduct2.getOrderProductCount())
                 .build();
 
         orders.add(order1);
@@ -100,9 +102,10 @@ class OrderServiceTest {
         // given
         given(orderRepository.findAll()).willReturn(orders);
         // when
-        List<Order> allOrders = orderService.getOrders();
+        List<OrderDto> allOrders = orderService.getOrders();
         // then
-        assertThat(allOrders).isEqualTo(orders);
+        assertThat(allOrders.get(0).getTotalPrice()).isEqualTo(3000);
+        assertThat(allOrders.get(0).getTotalQuantity()).isEqualTo(3);
     }
 
     @Test

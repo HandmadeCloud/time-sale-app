@@ -87,7 +87,7 @@ class OrderControllerTest {
         orders.add(order1);
     }
 
-    @Test
+    @Test //수정
     @DisplayName("주문 정보 전체 조회에 성공한다.")
     void getOrders() throws Exception {
         // Given

@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor
-@AllArgsConstructor
 public enum ResponseTemplateStatus {
 
     SUCCESS("T_2000", "요청 성공"),

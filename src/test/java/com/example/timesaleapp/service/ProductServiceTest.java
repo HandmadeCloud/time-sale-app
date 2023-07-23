@@ -84,9 +84,10 @@ class ProductServiceTest {
         //given
         given(productRepository.findAll()).willReturn(products);
         //when
-        List<Product> allProducts = productService.getProducts();
+        List<ProductDto> allProducts = productService.getProducts();
         //then
-        assertThat(allProducts).isEqualTo(products);
+        assertThat(allProducts.get(0).getPrice()).isEqualTo(1000);
+        assertThat(allProducts.get(1).getMainImage()).isEqualTo("http://naver2.com");
     }
 
 //    @Test : 타임세일용
