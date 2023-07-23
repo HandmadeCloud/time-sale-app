@@ -21,13 +21,12 @@ public class ControllerAdvice {
      * 일반 응답 에러
      */
     @ExceptionHandler(ResponseException.class)
-    protected ResponseEntity<ResponseTemplate<ResponseTemplateStatus>> expect(ResponseException e) {
-        e.printStackTrace();
-        log.info("Controller advice exception : {}", e);
+    protected ResponseEntity<ResponseTemplate<Void>> expect(ResponseException e) {
+        log.error("Controller advice exception : {}", e);
         ResponseTemplateStatus status = e.getResponseTemplateStatus();
 
-        return ResponseEntity.status(status.getHttpStatus())
-                .body(ResponseTemplate.of(status));
+        return ResponseEntity.badRequest()
+                .body(ResponseTemplate.error(ResponseTemplateStatus.LOGICAL_ERROR));
     }
 
     /**
@@ -35,8 +34,7 @@ public class ControllerAdvice {
      */
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ResponseTemplate<Void>> expect(Exception e) {
-        e.printStackTrace();
-        log.info("Controller advice exception : {}", e);
+        log.error("Controller advice exception : {}", e);
 
         return ResponseEntity.badRequest()
                 .body(ResponseTemplate.error(ResponseTemplateStatus.LOGICAL_ERROR));
@@ -47,7 +45,7 @@ public class ControllerAdvice {
      */
     @ExceptionHandler(MissingRequestHeaderException.class)
     protected ResponseEntity<ResponseTemplate<Void>> handleMissingRequestHeaderException(MissingRequestHeaderException e) {
-        log.error("Excepted MissingRequestHeaderException : {}", e.getMessage());
+        log.warn("Excepted MissingRequestHeaderException : {}", e.getMessage());
 
         return ResponseEntity.badRequest()
                 .body(ResponseTemplate.error(ResponseTemplateStatus.LOGICAL_ERROR));
@@ -58,7 +56,7 @@ public class ControllerAdvice {
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     protected ResponseEntity<ResponseTemplate<Void>> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
-        log.error("Excepted MissingRequestBodyException : {}", e.getMessage());
+        log.warn("Excepted MissingRequestBodyException : {}", e.getMessage());
         return ResponseEntity.badRequest()
                 .body(ResponseTemplate.error(ResponseTemplateStatus.LOGICAL_ERROR));
     }

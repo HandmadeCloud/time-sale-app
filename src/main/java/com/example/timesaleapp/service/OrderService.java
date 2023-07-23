@@ -6,6 +6,7 @@ import com.example.timesaleapp.domain.member.Member;
 import com.example.timesaleapp.domain.order.Order;
 import com.example.timesaleapp.domain.order.OrderProduct;
 import com.example.timesaleapp.domain.order.dto.OrderDto;
+import com.example.timesaleapp.domain.order.dto.OrderProductUpdateDto;
 import com.example.timesaleapp.domain.product.Product;
 import com.example.timesaleapp.repository.MemberRepository;
 import com.example.timesaleapp.repository.OrderRepository;
@@ -50,17 +51,18 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderDto cancelOrder(Long id) {
-        Order order = orderRepository.findById(id).orElseThrow(MyAppNotFoundException::new);
+    public OrderDto cancelOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(MyAppNotFoundException::new);
         order.cancel();
 
         return OrderDto.of(order);
     }
 
-//    public void correct(Long id, OrderProductUpdateDto orderProductUpdateDto){
-//        Order order = orderRepository.findById(id).orElseThrow(MyAppNotFoundException::new);
-//        List<OrderProduct> orderProducts = order.getOrderProducts();
-//        orderProducts.correct
-//
-//    }
+    public void updateOrder(Long orderId, OrderProductUpdateDto orderProductUpdateDto){
+        Order order = orderRepository.findById(orderId).orElseThrow(MyAppNotFoundException::new);
+        List<OrderProduct> orderProducts = order.getOrderProducts();
+        for(OrderProduct orderProduct : orderProducts){
+            orderProduct.updateOrderProduct(orderProductUpdateDto);
+        }
+    }
 }

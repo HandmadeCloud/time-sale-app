@@ -1,4 +1,4 @@
 package com.example.timesaleapp.domain.order.dto;
 
-public record OrderProductUpdateDto (Long productId, int count){
+public record OrderProductUpdateDto (Long productId, int orderProductCount){
 }

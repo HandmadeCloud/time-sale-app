@@ -17,15 +17,15 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service @Slf4j
+@Service
+@Slf4j
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class MemberService {
 
     private final MemberRepository memberRepository;
 
     @Transactional
-    @Validation
+    @Validation //수정은 앞에서!
     public Long createMember(MemberSignUpDto signUpDto) {
         validateDuplicateEmail(signUpDto.email());
         Member member = Member.of(signUpDto);

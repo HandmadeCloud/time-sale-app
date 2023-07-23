@@ -93,7 +93,6 @@ public class Product extends BaseTimeEntity {
         this.price = salePrice;
     }
 
-    //수정 업데이트 파트
     private String validateUpdateString(String update, String origin) {
         if (update == null) {
             return origin;

@@ -45,4 +45,13 @@ public class OrderProduct {
         return orderProduct;
     }
 
+    public void updateOrderProduct(OrderProductUpdateDto updateDto){
+        int presentOrderProductCount = this.orderProductCount;
+        this.orderProductId = updateDto.productId();
+        this.orderProductCount = updateDto.orderProductCount();
+
+        product.addStock(presentOrderProductCount);
+        product.deductStock(orderProductCount);
+    }
+
 }
