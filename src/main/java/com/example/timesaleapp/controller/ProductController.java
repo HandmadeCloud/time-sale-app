@@ -20,7 +20,7 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping("")
+    @GetMapping
     public ResponseTemplate<List<ProductDto>> getProducts() {
 
         return ResponseTemplate.valueOf(productService.getProducts());
@@ -32,7 +32,7 @@ public class ProductController {
         return ResponseTemplate.valueOf(productService.registerProduct(registerDto));
     }
 
-    @PatchMapping("/update/{productId}")
+    @PatchMapping("/{productId}")
     public ResponseTemplate<ProductDto> updateProduct(@PathVariable Long productId, @RequestBody ProductUpdateDto productUpdateDto) {
 
         return ResponseTemplate.valueOf(productService.updateProduct(productId, productUpdateDto));

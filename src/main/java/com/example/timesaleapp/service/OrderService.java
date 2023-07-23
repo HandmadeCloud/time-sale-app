@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class OrderService {
 
     private final OrderRepository orderRepository;
@@ -58,6 +57,7 @@ public class OrderService {
         return OrderDto.of(order);
     }
 
+    @Transactional
     public void updateOrder(Long orderId, OrderProductUpdateDto orderProductUpdateDto){
         Order order = orderRepository.findById(orderId).orElseThrow(MyAppNotFoundException::new);
         List<OrderProduct> orderProducts = order.getOrderProducts();

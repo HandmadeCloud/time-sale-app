@@ -19,7 +19,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("")
+    @GetMapping
     public ResponseTemplate<List<MemberDto>> getMembers(){
 
         return ResponseTemplate.valueOf(memberService.getMembers());
@@ -31,7 +31,7 @@ public class MemberController {
         return ResponseTemplate.valueOf(memberService.createMember(signUpDto));
     }
 
-    @PatchMapping("/update/{memberId}")
+    @PatchMapping("/{memberId}")
     public ResponseTemplate<MemberDto> updateMember(@PathVariable Long memberId, @RequestBody MemberUpdateDto memberUpdateDto){
 
         return ResponseTemplate.valueOf(memberService.updateMember(memberId, memberUpdateDto));

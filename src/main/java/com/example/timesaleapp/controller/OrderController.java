@@ -29,13 +29,13 @@ public class OrderController {
         return ResponseTemplate.valueOf(orderService.createOrder(memberId, orderProducts));
     }
 
-    @GetMapping("")
+    @GetMapping
     public ResponseTemplate<List<OrderDto>> getOrders() {
 
         return ResponseTemplate.valueOf(orderService.getOrders());
     }
 
-    @PatchMapping("/{orderId}/update") //postman 추가해보기
+    @PatchMapping("/{orderId}")
     public ResponseTemplate<Void> updateOrder(@PathVariable Long orderId, OrderProductUpdateDto updateDto){
         orderService.updateOrder(orderId,updateDto);
 

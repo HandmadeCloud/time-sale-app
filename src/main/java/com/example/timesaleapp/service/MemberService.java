@@ -25,7 +25,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    @Validation //수정은 앞에서!
+    @Validation
     public Long createMember(MemberSignUpDto signUpDto) {
         validateDuplicateEmail(signUpDto.email());
         Member member = Member.of(signUpDto);
