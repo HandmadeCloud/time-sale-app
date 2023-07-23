@@ -3,6 +3,7 @@ package com.example.timesaleapp.domain.order;
 import com.example.timesaleapp.domain.BaseTimeEntity;
 import com.example.timesaleapp.domain.member.Member;
 import com.example.timesaleapp.domain.product.Product;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,10 +29,12 @@ public class Order extends BaseTimeEntity {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
+    @JsonIgnore
     private Member member;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order")
     @Builder.Default
+    @JsonIgnore
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
     @Column(name = "total_price")

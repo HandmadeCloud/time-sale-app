@@ -41,7 +41,7 @@ public class Member extends BaseTimeEntity {
     @NotBlank
     private String nickName;
 
-    @OneToMany(mappedBy = "member", fetch = LAZY)
+    @OneToMany(mappedBy = "member")
     @Builder.Default
     private List<Order> orders = new ArrayList<>();
 

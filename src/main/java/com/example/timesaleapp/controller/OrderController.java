@@ -35,12 +35,13 @@ public class OrderController {
         return ResponseTemplate.valueOf(orderService.getOrders());
     }
 
-    @PatchMapping("/{orderId}")
-    public ResponseTemplate<Void> updateOrder(@PathVariable Long orderId, OrderProductUpdateDto updateDto){
-        orderService.updateOrder(orderId,updateDto);
-
-        return ResponseTemplate.of(SUCCESS);
-    }
+//    @PatchMapping("/{orderId}")
+//    public ResponseTemplate<Void> updateOrder(@PathVariable Long orderId,
+//                                              @RequestBody OrderProductUpdateDto updateDto){
+//        orderService.updateOrder(orderId,updateDto);
+//
+//        return ResponseTemplate.of(SUCCESS);
+//    }
 
     @PatchMapping("/delete/{orderId}")
     public ResponseTemplate<OrderDto> cancelOrder(@PathVariable Long orderId) {

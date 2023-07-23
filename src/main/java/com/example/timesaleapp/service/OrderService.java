@@ -57,12 +57,13 @@ public class OrderService {
         return OrderDto.of(order);
     }
 
-    @Transactional
-    public void updateOrder(Long orderId, OrderProductUpdateDto orderProductUpdateDto){
-        Order order = orderRepository.findById(orderId).orElseThrow(MyAppNotFoundException::new);
-        List<OrderProduct> orderProducts = order.getOrderProducts();
-        for(OrderProduct orderProduct : orderProducts){
-            orderProduct.updateOrderProduct(orderProductUpdateDto);
-        }
-    }
+//    @Transactional
+//    public void updateOrder(Long orderId, OrderProductUpdateDto updateDto){
+//        Order order = orderRepository.findById(orderId).orElseThrow(MyAppNotFoundException::new);
+//
+//        List<OrderProduct> orderProducts = order.getOrderProducts();
+//        for(OrderProduct orderProduct : orderProducts){
+//            orderProduct.updateOrderProduct(orderProductUpdateDto);
+//        }
+//    }
 }

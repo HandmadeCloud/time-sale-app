@@ -46,6 +46,7 @@ public class ProductService {
         return ProductDto.of(product);
     }
 
+    @Transactional
     public ProductDto deleteProduct(Long id) {
         Product product = productRepository.findById(id).orElseThrow(MyAppNotFoundException::new);
         product.changeStatusNotForSale();

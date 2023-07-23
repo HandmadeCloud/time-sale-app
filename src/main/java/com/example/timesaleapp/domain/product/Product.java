@@ -3,6 +3,7 @@ package com.example.timesaleapp.domain.product;
 import com.example.timesaleapp.config.ResponseException;
 import com.example.timesaleapp.constant.ResponseTemplateStatus;
 import com.example.timesaleapp.domain.BaseTimeEntity;
+import com.example.timesaleapp.domain.member.MemberStatus;
 import com.example.timesaleapp.domain.product.dto.ProductRegisterDto;
 import com.example.timesaleapp.domain.product.dto.ProductUpdateDto;
 import jakarta.persistence.*;
@@ -54,6 +55,7 @@ public class Product extends BaseTimeEntity {
     public void changeStatusNotForSale() {
         this.productStatus = ProductStatus.NOT_FOR_SALE;
     }
+
 
     public void update(ProductUpdateDto productUpdateDto) {
         this.name = validateUpdateString(productUpdateDto.name(), this.name);

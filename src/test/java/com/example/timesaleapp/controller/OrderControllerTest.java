@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -98,8 +99,8 @@ class OrderControllerTest {
         mvc.perform(get("/api/v1/orders"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON))
-                .andExpect(jsonPath("$.data[0].orderProducts[0].orderPrice").value(1000))
-                .andExpect(jsonPath("$.data[0].orderProducts[1].orderPrice").value(2000));
+                .andExpect(jsonPath("$.data[0].orderProducts[0].orderProductPrice").value(1000))
+                .andExpect(jsonPath("$.data[0].orderProducts[1].orderProductPrice").value(2000));
     }
 
     @Test

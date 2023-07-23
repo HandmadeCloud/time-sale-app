@@ -4,6 +4,7 @@ import com.example.timesaleapp.config.MyAppNotFoundException;
 import com.example.timesaleapp.domain.order.dto.OrderDto;
 import com.example.timesaleapp.domain.order.dto.OrderProductUpdateDto;
 import com.example.timesaleapp.domain.product.Product;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -54,4 +55,7 @@ public class OrderProduct {
         product.deductStock(orderProductCount);
     }
 
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 }
